@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      body {
+        color: darkblue;
+      }
+    </style>
+    <script type="importmap">
+      {
+        "imports": {
+          "lit-html":       "./node_modules/lit-dist/dist/lit.js",
+          "lit-element":    "./node_modules/lit-dist/dist/lit.js"
+        }
+      }
+    </script>
+    <script type="module">
+      import ShareButton from "./share-button.js";
+    </script>
+  </head>
+  <body>
+    <share-button
+      title="Infrequently Noted"
+      url="https://infrequently.org/">
+      <!-- 
+      <a  
+        class="share-button-fallback twitter" 
+        rel="noopener" 
+        href="https://twitter.com/intent/tweet?url=${URL}&amp;text=${TITLE}">
+        Share on twitter (opens new window)
+      </a>
+      -->
+    </share-button>
+  </body>
+</html>

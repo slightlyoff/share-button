@@ -1,0 +1,17 @@
+.DS_Store
+.d8_history
+.vscode
+npm-debug.log
+.env
+package-lock.json
+test/*.log
+node_modules/*
+web_modules/*
+urls.json
+out/*
+tmp/*
+build/*
+*.code-workspace
+
+# Local Netlify folder
+.netlify

@@ -1,0 +1,26 @@
+{
+  "name": "@slightlyoff/share-button",
+  "description": "A web component for sharing.",
+  "author": "Alex Russell <slightlyoff@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:slightlyoff/share-button.git"
+  },
+  "scripts": {
+    "subset": "./subset.sh"
+  },
+  "files": [
+    "share-button.js"
+  ],
+  "license": "MIT",
+  "version": "0.1.0",
+  "main": "share-button.js",
+  "module": "share-button.js",
+  "keywords": [
+    "web components",
+    "web share"
+  ],
+  "dependencies": {
+    "lit-dist": "^2.2.1"
+  }
+}
