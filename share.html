@@ -6,6 +6,7 @@
         color: darkblue;
       }
     </style>
+    <!-- 
     <script type="importmap">
       {
         "imports": {
@@ -15,7 +16,17 @@
       }
     </script>
     <script type="module">
-      import ShareButton from "./share-button.js";
+      // import ShareButton from "./share-button.js";
+    </script> 
+    -->
+
+    <script type="module">
+      // import { LitElement, html, css } from 
+      //     "./node_modules/lit-dist/dist/lit.js";
+      // globalThis._lit =  { LitElement, html, css };
+      globalThis._lit = await import("./node_modules/lit-dist/dist/lit.js");
+      await import("./share-button.js");
+
     </script>
   </head>
   <body>

@@ -1,4 +1,18 @@
-import { LitElement, html, css } from "lit-html";
+// All of this mess just because Safari sucks.
+let LitElement, html, css;
+await (async () => {
+  let tmp;
+  try {
+    // Try bare modules
+    tmp = await import("lit-html");
+  } catch(e) {
+    // ...and if that doesn't work out, pluck deps out of thin air
+    tmp = globalThis._lit;
+  }
+  LitElement = tmp.LitElement;
+  css = tmp.css;
+  html = tmp.html;
+})();
 
 // One-time global addition of fonts to the parent document. This prevents
 // repeated definitions as well as the node bloat of SVG.
