@@ -124,71 +124,71 @@ class ShareButton extends LitElement {
       text: this.text
     };
 
-        if (this.image) {
-          let file = await this.#getImageDataFile();
-          shareData.files = [ file ];
-        }
-
-        try {
-          await navigator.share(shareData);
-          this.dispatchEvent(new CustomEvent("share", {
-            detail: shareData,
-            bubbles: true,
-            composed: true
-          }));
-          this.#success(evt);
-        } catch(e) {
-          console.error("share-button share failed:", e);
-        }
-      }
-
-      async tweet(evt) {
-        let url = new URL("/intent/tweet", "https://twitter.com");
-        url.searchParams.set("url", this._url);
-        url.searchParams.set("text", this._fullText);
-        // console.log(url.toString());
-        window.open(url.toString(), "twitterShare", "popup,noopener");
-        this.#success(evt);
-      }
-
-      async copyLink(evt) {
-        try {
-          navigator.clipboard.writeText(`${this._fullText}${this._url}`);
-          this.#success(evt);
-        } catch(e) {
-          console.error(e);
-        }
-      }
-
-      render() {
-        return html`
-          <button 
-            part="share-button"
-            class="share" 
-            aria-label="Share" 
-            title="Share" 
-            @click="${this.share}">
-            &#xF14D
-          </button> 
-          <button 
-            part="tweet-button"
-            class="tweet" 
-            aria-label="Share on Twitter"
-            title="Share on Twitter"
-            @click="${this.tweet}">
-            &#xF099
-          </button> 
-          <button 
-            part="copy-link-button"
-            class="copy-link" 
-            aria-label="Copy link to this article"
-            title="Copy link to this article"
-            @click="${this.copyLink}">
-            &#xF0C1
-          </button>
-        `;
-      }
+    if (this.image) {
+      let file = await this.#getImageDataFile();
+      shareData.files = [ file ];
     }
-    customElements.define("share-button", ShareButton);
 
-    export default ShareButton;
+    try {
+      await navigator.share(shareData);
+      this.dispatchEvent(new CustomEvent("share", {
+        detail: shareData,
+        bubbles: true,
+        composed: true
+      }));
+      this.#success(evt);
+    } catch(e) {
+      console.error("share-button share failed:", e);
+    }
+  }
+
+  async tweet(evt) {
+    let url = new URL("/intent/tweet", "https://twitter.com");
+    url.searchParams.set("url", this._url);
+    url.searchParams.set("text", this._fullText);
+    // console.log(url.toString());
+    window.open(url.toString(), "twitterShare", "popup,noopener");
+    this.#success(evt);
+  }
+
+  async copyLink(evt) {
+    try {
+      navigator.clipboard.writeText(`${this._fullText}${this._url}`);
+      this.#success(evt);
+    } catch(e) {
+      console.error(e);
+    }
+  }
+
+  render() {
+    return html`
+      <button 
+        part="share-button"
+        class="share" 
+        aria-label="Share" 
+        title="Share" 
+        @click="${this.share}">
+        &#xF14D
+      </button> 
+      <button 
+        part="tweet-button"
+        class="tweet" 
+        aria-label="Share on Twitter"
+        title="Share on Twitter"
+        @click="${this.tweet}">
+        &#xF099
+      </button> 
+      <button 
+        part="copy-link-button"
+        class="copy-link" 
+        aria-label="Copy link to this article"
+        title="Copy link to this article"
+        @click="${this.copyLink}">
+        &#xF0C1
+      </button>
+    `;
+  }
+}
+customElements.define("share-button", ShareButton);
+
+export default ShareButton;
