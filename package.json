@@ -13,7 +13,7 @@
     "share-button.js"
   ],
   "license": "MIT",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "main": "share-button.js",
   "module": "share-button.js",
   "keywords": [
@@ -21,6 +21,6 @@
     "web share"
   ],
   "dependencies": {
-    "lit-dist": "^2.2.1"
+    "lit-dist": "^2.2.6"
   }
 }
