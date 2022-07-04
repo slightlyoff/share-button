@@ -30,6 +30,22 @@ if (!document.fonts.check("1rem share-button-combined")) {
   await font.load();
   document.fonts.add(font);
 }
+// Work around a Gecko/Firefox issue with dynamic fonts and Shadow DOM by
+// adding all of this via script tag instead
+if (
+  navigator.userAgent.includes("Gecko") &&
+  navigator.userAgent.includes("Firefox")
+) {
+  let styleEl = document.createElement("style");
+  styleEl.innerText = `
+    @font-face {
+      font-family: "share-button-combined";
+      font-display: block;
+      src: ${srcUrl} format("woff2");
+    }
+  `;
+  document.head.appendChild(styleEl);
+}
 
 class ShareButton extends LitElement {
 
