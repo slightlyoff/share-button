@@ -1,19 +1,3 @@
-// All of this mess just because Safari sucks.
-let LitElement, html, css;
-await (async () => {
-  let tmp;
-  try {
-    // Try bare modules
-    tmp = await import("lit-html");
-  } catch(e) {
-    // ...and if that doesn't work out, pluck deps out of thin air
-    tmp = globalThis._lit;
-  }
-  LitElement = tmp.LitElement;
-  css = tmp.css;
-  html = tmp.html;
-})();
-
 // One-time global addition of fonts to the parent document. This prevents
 // repeated definitions as well as the node bloat of SVG.
 //
@@ -47,10 +31,38 @@ if (
   document.head.appendChild(styleEl);
 }
 
-class ShareButton extends LitElement {
+let _styleMap = new Map();
+let addStyles = (doc, styles) => {
+  let s = _styleMap.get(styles);
+  if (!s) {
+    try {
+      s = {
+        type: "CSS",
+        value: new CSSStyleSheet()
+      }
+      s.value.replaceSync(styles);
+    } catch(e) {
+      s = {
+        type: "sheet",
+        value: styles
+      };
+    }
+    switch(s.type) {
+      case "sheet":
+        let sheet = doc.createElement("style");
+        sheet.textContent = s.value;
+        doc.appendChild(sheet);
+        break;
+      case "CSS":
+        doc.adoptedStyleSheets = [...doc.adoptedStyleSheets, s.value];
+        break;
+    };
+  }
+}
 
-  static styles = css`
+class ShareButton extends HTMLElement {
 
+  static styles = `
     button {
       all: unset;
 
@@ -75,13 +87,61 @@ class ShareButton extends LitElement {
     }
   `;
 
-  static get properties() {
-    return {
-      url:      { type: String },
-      title:    { type: String },
-      text:     { type: String },
-      image:    { type: String },
-    };
+  static template = (() => {
+    document.body.insertAdjacentHTML("beforeend", `
+    <template>
+      <button
+        part="share-button"
+        class="share"
+        aria-label="Share"
+        title="Share"
+        id="share">
+        &#xF14D
+      </button>
+      <button
+        part="tweet-button"
+        class="tweet"
+        aria-label="Share on Twitter"
+        title="Share on Twitter"
+        id="tweet">
+        &#xF099
+      </button>
+      <button
+        part="copy-link-button"
+        class="copy-link"
+        aria-label="Copy link to this article"
+        title="Copy link to this article"
+        id="copy">
+        &#xF0C1
+      </button>
+    </template>`);
+    return document.body.lastElementChild;
+  })();
+
+  static get observedAttributes() {
+    return [
+      "url",
+      "title",
+      "text",
+      "image",
+    ];
+  }
+
+  constructor() {
+    super();
+    let shadow = this.attachShadow({ mode: "open" });
+    this.url = "";
+    this.title = "";
+    this.text = "";
+    this.image = "";
+  }
+
+  attributeChangedCallback(name, oldValue, newValue) {
+    if(ShareButton.observedAttributes.includes(name) &&
+       oldValue !== newValue) {
+      console.log(name, oldValue, newValue)
+      this[name] = newValue;
+    }
   }
 
   #imageDataFile = null;
@@ -158,7 +218,6 @@ class ShareButton extends LitElement {
     let url = new URL("/intent/tweet", "https://twitter.com");
     url.searchParams.set("url", this._url);
     url.searchParams.set("text", this._fullText);
-    // console.log(url.toString());
     window.open(url.toString(), "twitterShare", "popup,noopener");
     this.#success(evt);
   }
@@ -172,33 +231,17 @@ class ShareButton extends LitElement {
     }
   }
 
-  render() {
-    return html`
-      <button
-        part="share-button"
-        class="share"
-        aria-label="Share"
-        title="Share"
-        @click="${this.share}">
-        &#xF14D
-      </button>
-      <button
-        part="tweet-button"
-        class="tweet"
-        aria-label="Share on Twitter"
-        title="Share on Twitter"
-        @click="${this.tweet}">
-        &#xF099
-      </button>
-      <button
-        part="copy-link-button"
-        class="copy-link"
-        aria-label="Copy link to this article"
-        title="Copy link to this article"
-        @click="${this.copyLink}">
-        &#xF0C1
-      </button>
-    `;
+  connectedCallback() {
+    addStyles(this.shadowRoot, ShareButton.styles);
+    this.shadowRoot.appendChild(ShareButton.template.content.cloneNode(true));
+    let share = this.shadowRoot.getElementById("share")
+    if (navigator.share) {
+      share.addEventListener("click", this.share.bind(this));
+    } else {
+      share.style.display = "none";
+    }
+    this.shadowRoot.getElementById("tweet").addEventListener("click", this.tweet.bind(this));
+    this.shadowRoot.getElementById("copy").addEventListener("click", this.copyLink.bind(this));
   }
 }
 customElements.define("share-button", ShareButton);
