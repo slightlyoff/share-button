@@ -1,7 +1,5 @@
 // One-time global addition of fonts to the parent document. This prevents
 // repeated definitions as well as the node bloat of SVG.
-//
-// NOTE: sites can inline the next 10 lines in order to prevent layouts.
 
 let srcUrl = `url(data:font/woff2;base64,d09GMgABAAAAAAOgAAoAAAAABowAAANXAwEDAAAAAAAAAAAAAAAAAAAAAAAAAAAABmAAPAqFWIQsATYCJAMQCwoABCAFgzQHIBslBQiOwnGvhGIyecXij+ehtfb+7OxhEpJl82TaLUOFTFtqpFEp5ULFM39Pp71fKFLbzd1s7VRmUpkHAJm4JuhHcvVERzob0L89LRqHVTiKBBvp7HGVIOvz1CIa0N4mGkLHWJSYmURnW6h5jHqgJVcoBcBp4f9ATkO+aBso+KT/Yf860BsOfo5+8kYHhQdB3sAOCGQHLQIzANEIRlXLwKBBhc/Rj4c+eQuFuR8ljeJA3gbhoOr1QbT4ABkULEcUZUdJicdLHYS8oJqgq9Hmesgg4Ybvds3V8iPYztntcrSosltxHNvnfip4CE1rrTHbprFDa4K3Qm2len7IEnOEFSxz3GovDqMqKzDZJQmEoAG5QVY7J3QY1bKDFmRhQIY4xBYdJhBWYGOqMm3MAVmRUdagCmkFZxhDY6qRBwio3Xqfwqw2Ggiwhwo5nDXyY5qrd2zUg1ZCp7FKZVELfKxBZy4OYu50OW6zH9XahsbvlUFts6zinB5nOMWZK+VG9xKEdq3QNTWruVp1Sf2wEZ6Gs8f5mPU+6KyCTqtJSACnc44Kjg7a9tpxKBxcFjaSPKB8ub9/qkaGctg1M1NCxLN3vzrxBr8iy14UIxLO3dv48IHpo6NiT87GPgfecnfTsn+XPiTGLFw6s5cSyvLzY4YR7p3TXmAKPlxM6ZFOCYOKZWRSLn70Z+pJSFLjxMmDxaMGMf15ssIPPYrEh/8CquC/v1I9jj+stdplDhavIUaOb1DZpkMrVmDcDCSFcZ2bcLyJLyjGFUocD2+qoS0d2tyaiXFXQH9eOWnC3GJCIFD9ecoCzN9DDI3eoIxDm3YscbFMJMk94SjgpyngqUEO1BWHN5WWU9T9SsbH4PMBIDQRheeHbO9YitU3KWkRgP7TnpA0LVT4Vbiz9KAHAAYVdVC+OFY6YePGq9ID8ZtqakBB2QMoHUxDqJUHagBB1NMG3BGVKg2sA0qJXcZKMe5RaZyo6KxSpXXv8L561qMKjvgESuVJlypNAZy6RBpwLvhymO+zVyxZPr5syfwwnCmcgzzxciQBiQtwTFUoS3w12S67ch2mdBn0lSGS5cmXbhrDmUkcmNOlbxmQJn4hjxkTOHWXu4vMei3glzwa+lq+2/RVZzpBUY2r/zvkAA==)`;
 
@@ -61,6 +59,8 @@ let addStyles = (doc, styles) => {
 }
 
 class ShareButton extends HTMLElement {
+
+  static fontUrl = srcUrl;
 
   static styles = `
     button {
@@ -139,7 +139,6 @@ class ShareButton extends HTMLElement {
   attributeChangedCallback(name, oldValue, newValue) {
     if(ShareButton.observedAttributes.includes(name) &&
        oldValue !== newValue) {
-      console.log(name, oldValue, newValue)
       this[name] = newValue;
     }
   }
