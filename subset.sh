@@ -8,8 +8,8 @@ then
   fonttools merge --output-file=$MERGED ./fontawesome/*.ttf
 fi
 
-# Share, Tweet, Link
-pyftsubset $MERGED --unicodes="U+F14D,U+F099,U+F0C1" \
+# Share, Tweet, Link, Toot
+pyftsubset $MERGED --unicodes="U+F14D,U+F099,U+F0C1,U+F4F6" \
   --flavor=woff2 --output-file=$COMBINED
 
 base64 $COMBINED \
