@@ -1,6 +1,12 @@
 # share-button
 
-A performance-first web component for sharing on [infrequently.org](https://infrequently.org)
+A performance-first web component for sharing on [infrequently.org](https://infrequently.org).
+
+Provides:
+
+  - Sharing via [Web Share API](https://web.dev/web-share/) as well as direct link copy and toot/tweet buttons
+  - Themeing through CSS variables and Web Component `::part()`s
+  - Tiny footprint; a single file, < 4KiB gzipped, and traced to death by someone who knows their way around a browser
 
 ## Using/Configuring
 
