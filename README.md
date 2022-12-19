@@ -1,4 +1,4 @@
-# share-button
+# `<share-button>`
 
 A performance-first web component for content sharing. Initially developed for (and you can see it used on) [infrequently.org](https://infrequently.org/)
 
