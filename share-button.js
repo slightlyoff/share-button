@@ -11,11 +11,14 @@ if (!document.fonts.check("1rem share-button-combined")) {
   await font.load();
   document.fonts.add(font);
 }
-// Work around a Gecko/Firefox issue with dynamic fonts and Shadow DOM by
-// adding all of this via script tag instead
+
+let ua = navigator.userAgent;
 if (
-  navigator.userAgent.includes("Gecko") &&
-  navigator.userAgent.includes("Firefox")
+  // Safari 16.4 added Constructable Stylesheets, but broken
+  (ua.includes("Safari") && !(ua.includes("Safari/537.36")) ) ||
+  // Work around a Gecko/Firefox issue with dynamic fonts and Shadow DOM by
+  // adding all of this via script tag instead
+  (ua.includes("Gecko") && ua.includes("Firefox"))
 ) {
   let styleEl = document.createElement("style");
   styleEl.innerText = `
@@ -111,7 +114,7 @@ class ShareButton extends HTMLElement {
         aria-label="Share on Twitter"
         title="Share on Twitter"
         id="tweet">
-        &#xF099
+        &#xF099;
       </button>
       <button
         part="toot-button"
@@ -119,7 +122,7 @@ class ShareButton extends HTMLElement {
         aria-label="Share on Mastodon"
         title="Share on Mastodon"
         id="toot">
-        &#xF4F6
+        &#xF4F6;
       </button>
       <button
         part="copy-link-button"
@@ -127,14 +130,14 @@ class ShareButton extends HTMLElement {
         aria-label="Copy link to this article"
         title="Copy link to this article"
         id="copy">
-        &#xF0C1
+        &#xF0C1;
       </button>
       <dialog id="toot-prompt">
         <form method="dialog" id="toot-form">
-          <label for="instance">Instance</label> 
-          <input 
-            type="url" 
-            id="instance" 
+          <label for="instance">Instance</label>
+          <input
+            type="url"
+            id="instance"
             placeholder="https://mastodon.social/"
             pattern="https://.*"
             list="defaultURLs"
@@ -306,8 +309,8 @@ class ShareButton extends HTMLElement {
     let sr = this.shadowRoot;
     let byId = (id) => { return sr.getElementById(id); }
     let listen = (id, evt, method) => {
-      let m = (typeof method == "string") ? 
-          this[method].bind(this) : 
+      let m = (typeof method == "string") ?
+          this[method].bind(this) :
           method;
       byId(id).addEventListener(evt, m);
     };
@@ -319,7 +322,7 @@ class ShareButton extends HTMLElement {
     );
 
     if (navigator.share) {
-      byId("share").addEventListener("click", 
+      byId("share").addEventListener("click",
         this.share.bind(this)
       );
     } else {
