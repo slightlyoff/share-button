@@ -13,23 +13,15 @@ if (!document.fonts.check("1rem share-button-combined")) {
 }
 
 let ua = navigator.userAgent;
-if (
-  // Safari 16.4 added Constructable Stylesheets, but broken
-  (ua.includes("Safari") && !(ua.includes("Safari/537.36")) ) ||
-  // Work around a Gecko/Firefox issue with dynamic fonts and Shadow DOM by
-  // adding all of this via script tag instead
-  (ua.includes("Gecko") && ua.includes("Firefox"))
-) {
-  let styleEl = document.createElement("style");
-  styleEl.innerText = `
-    @font-face {
-      font-family: "share-button-combined";
-      font-display: block;
-      src: ${srcUrl} format("woff2");
-    }
-  `;
-  document.head.appendChild(styleEl);
-}
+let styleEl = document.createElement("style");
+styleEl.innerText = `
+  @font-face {
+    font-family: "share-button-combined";
+    font-display: block;
+    src: ${srcUrl} format("woff2");
+  }
+`;
+document.head.appendChild(styleEl);
 
 let _styleMap = new Map();
 let addStyles = (doc, styles) => {
