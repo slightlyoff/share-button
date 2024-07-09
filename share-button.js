@@ -1,8 +1,8 @@
 // One-time global addition of fonts to the parent document. This prevents
 // repeated definitions as well as the node bloat of SVG.
 let srcUrl = `url(data:font/woff2;base64,d09GMgABAAAAAAS4AAoAAAAACAwAAARtAwEDAAAAAAAAAAAAAAAAAAAAAAAAAAAABmAAgQwKiASGCQE2AiQDFAsMAAQgBYM0ByAbVgYArgZsFz1DDE2LjrYji3S59I6ITpHHx6VJPPz/WrvvzwwiHjeR8GTaaJuwZlpnKyVwSNS4IYNHfvIve7NExNmYPzBYntrr2LKFDtbV7NkvOcFuUP0mdDZTPPActn9jTFqzgfX8MLtBkAaULcBAoj2sA0wks92/Nm6DuK4acJcFFBiEkvAq2H7+r6mH0Xy3KtGRzgYUkbh3tAocRYINeEL/jdbWGOV7nggDwdm8emmsEVUXHyvI4xNSgILYD0QBW1P8Q0hrMSkymFSX8VbWIX7w+FD5kgP/z0B+AFgCAbEY1WAKIMkE+pC1YB/FAtCiSZLeKx88Or6MAPYz9JicTbZNOBAU2gZf5soxlgUL/P0FluMfB7AM//5HJIaCoQVqRKLa81gThheSTFxc0VFVJYiMMVFj410hwJpXaeqtc9tkW+6M9Nj9lVB1vVaZkb/zmvQsCyz4juWZ9oXuLLGhuamVMd9EVYrKEmri+RmzHdE9lhiVmVRohFepJf09t1GDK82N+CilZ7VVVndbVxpH7ok97AvfkV9QXkChSWRax3E9YByqxuUyI72j3qMtK7/D3hhjslO4Ee5W6+VJyTDWmOk9him5Dfnn7M1mh543xiR7pCMmAk0aulqHURJnXMnlwt4o0xqsDiJV5jF1bq1NyCMvIOYhhXrWnWhJL2rggNS4LpWW3pGb1tlOB/TQTaXSlvqaLhlQBm1MGidx6T5m/oiadkTSbRJ1mwmVZcMEKyclNmWnICl2j0fsrPzc1ljXKmoYf4r0jduo2QOUpqEvFKI4YKvjInJx1nPSS0S+3LcOud5qdkdGXsoW/rNDfA4N5XPyWOGsJ2flOpFF2sivdxsO9vX/3jHHM8Fn0EDh/4ara/gKAO33hyWlXOTX9dU3nchkeuxlZdu/OXWztwSQR+pCGU9OHuDwrxYOdEKotX/iHUPDkb2PDIsZ5x+XnxSLaQfO5+XFOyFtR1mGplh5Nz+QnJycLCl/mN8JRjT+FBC7A+3jfxfvw4NWN9M99IhKYKBEJHt3VvXCW/J9IaogkT7GPZFI6b8PrhxDGl5wSKWdHIQ9TiKIkPl/H6XTvv+lMAr/tQfVGAyCXdMrK7C+Cddx+YxkXL7U1o4qZCOC/Jhbewu3F6RUYFGly3NjXvf6U1P+mYjCBtRleqmz+9azhSkaPyaNWf2stE0/B+JeGtvfxuRzEF4BrlmYnCnCGaEaXRvPjemZrOBe1ewcBckAEGRBhr/NU30w3fSHQCQB1JO7V7Js/f8SLzjI9wCaJKTluydSGUqPy2ABQmURjZDk8kBLjhxGj8iKnKA5LBDoRY2qyCJnAjPAVoQlZoqkw6Uis6m2N89TFE49H6vBTECeiwKFqhTLkiFTKUxLCm2YuwL53u9zUiFNiQJ50mKTMAuYs2JJ8qUSgwVrZiiTK6ne061a1fosGDDea8OlKVYiq2ICs4xrsGLAKGHMcv9SBEvmMK1b+8srDVrDt/i0sY1av8U7temHyZSu/21CAAA=)`;
-
 if (!document.fonts.check("1rem share-button-combined")) {
+
   var font = new FontFace(
     "share-button-combined",
     srcUrl,
@@ -64,7 +64,7 @@ class ShareButton extends HTMLElement {
       --hover-bg-color: rgba(0, 0, 0, 18%);
     }
 
-    button {
+    :host > button {
       all: unset;
 
       font-family: share-button-combined;
@@ -78,12 +78,12 @@ class ShareButton extends HTMLElement {
       transition: all var(--transition-duration, 0.3s);
     }
 
-    button:focus {
+    :host > button:focus {
       outline: 2px solid currentColor;
       outline-style: auto;
     }
 
-    button:hover {
+    :host > button:hover {
       background: var(--hover-bg-color);
       transform: scale(var(--hover-scale));
     }
@@ -124,7 +124,8 @@ class ShareButton extends HTMLElement {
         id="copy">
         &#xF0C1;
       </button>
-      <dialog id="toot-prompt">
+      <dialog id="toot-prompt" 
+        part="toot-prompt-dialog">
         <form method="dialog" id="toot-form">
           <label for="instance">Instance</label>
           <input
