@@ -39,17 +39,18 @@ let addStyles = (doc, styles) => {
         value: styles
       };
     }
-    switch(s.type) {
-      case "sheet":
-        let sheet = doc.createElement("style");
-        sheet.textContent = s.value;
-        doc.appendChild(sheet);
-        break;
-      case "CSS":
-        doc.adoptedStyleSheets = [...doc.adoptedStyleSheets, s.value];
-        break;
-    };
+    _styleMap.set(styles, s);
   }
+  switch(s.type) {
+    case "sheet":
+      let sheet = doc.createElement("style");
+      sheet.textContent = s.value;
+      doc.appendChild(sheet);
+      break;
+    case "CSS":
+      doc.adoptedStyleSheets = [...doc.adoptedStyleSheets, s.value];
+      break;
+  };
 }
 
 class ShareButton extends HTMLElement {
