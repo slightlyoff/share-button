@@ -130,7 +130,7 @@ class ShareButton extends HTMLElement {
         class="promote"
         aria-label="Share on LinkedIn"
         title="Share on LinkedIn"
-        id="toot">
+        id="promote">
         &#xF08C;
       </button>
       <button
@@ -194,6 +194,14 @@ class ShareButton extends HTMLElement {
        oldValue !== newValue) {
       this[name] = newValue;
     }
+  }
+
+  #$(selector) {
+    return Array.from(this.shadowRoot.querySelectorAll(selector));
+  }
+
+  #$$(id) {
+    return this.shadowRoot.getElementById(id);
   }
 
   #imageDataFile = null;
@@ -288,10 +296,7 @@ class ShareButton extends HTMLElement {
 
   // Mastodon
   async toot(evt) {
-    let instance = this.shadowRoot.getElementById("instance").value;
-    console.dir(evt);
-    console.dir(this._fullText);
-    console.log(instance);
+    let instance = this.#$$("instance").value;
     let url = new URL("/share", instance);
     url.searchParams.set("url", this._url);
     url.searchParams.set("text", this._fullText);
@@ -299,30 +304,28 @@ class ShareButton extends HTMLElement {
     this.#success(evt);
   }
 
-  openTootDialog(evt) {
-    let dialog = this.shadowRoot.getElementById("toot-prompt");
-    dialog.showModal();
-  }
+  openTootDialog(evt) { this.#$$("toot-prompt").showModal(); }
 
-  closeTootDialog(evt) {
-    let dialog = this.shadowRoot.getElementById("toot-prompt");
-    dialog.close();
-  }
+  closeTootDialog(evt) { this.#$$("toot-prompt").close(); }
 
   // LI sharing
   promote(evt) {
     // https://www.linkedin.com/sharing/share-offsite/?url={url}
     let url = new URL("/sharing/share-offsite", "https://www.linkedin.com");
+    // LI seems to support posting either URLs, *or* text, so we go w/ URL
     url.searchParams.set("url", this._url);
-    url.searchParams.set("text", this._fullText);
+    // url.searchParams.set("text", this._fullText);
     window.open(url.toString(), "liShare", "popup,noopener");
     this.#success(evt);
   }
 
   // Bsky
   skeet(evt) {
-
-    // https://bsky.app/intent/compose ? text=...
+    // https://bsky.app/intent/compose?text=...
+    let url = new URL("/intent/compose", "https://bsky.app");
+    url.searchParams.set("text", `${this._fullText} ${this._url}`);
+    window.open(url.toString(), "skeetShare", "popup,noopener");
+    this.#success(evt);
   }
 
   connectedCallback() {
@@ -336,12 +339,11 @@ class ShareButton extends HTMLElement {
     this.#wired = true;
 
     let sr = this.shadowRoot;
-    let byId = (id) => { return sr.getElementById(id); }
     let listen = (id, evt, method) => {
       let m = (typeof method == "string") ?
           this[method].bind(this) :
           method;
-      byId(id).addEventListener(evt, m);
+      this.#$$(id).addEventListener(evt, m);
     };
 
     addStyles(sr, ShareButton.styles);
@@ -351,11 +353,9 @@ class ShareButton extends HTMLElement {
     );
 
     if (navigator.share) {
-      byId("share").addEventListener("click",
-        this.share.bind(this)
-      );
+      listen("share", "click", "share");
     } else {
-      byId("share").style.display = "none";
+      this.#$$("share").style.display = "none";
     }
 
     listen("tweet", "click", "tweet");
@@ -363,6 +363,8 @@ class ShareButton extends HTMLElement {
     listen("copy", "click", "copyLink");
     listen("toot-form", "submit", "toot");
     listen("cancel", "click", "closeTootDialog");
+    listen("promote", "click", "promote");
+    listen("skeet", "click", "skeet");
   }
 }
 customElements.define("share-button", ShareButton);
