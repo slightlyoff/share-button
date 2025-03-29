@@ -242,6 +242,7 @@ class ShareButton extends HTMLElement {
     }"\n\n`;
   }
 
+  // Web Share
   async share(evt) {
     let shareData = {
       url: this._url,
@@ -267,6 +268,7 @@ class ShareButton extends HTMLElement {
     }
   }
 
+  // *sigh*
   async tweet(evt) {
     let url = new URL("/intent/tweet", "https://twitter.com");
     url.searchParams.set("url", this._url);
@@ -284,6 +286,7 @@ class ShareButton extends HTMLElement {
     }
   }
 
+  // Mastodon
   async toot(evt) {
     let instance = this.shadowRoot.getElementById("instance").value;
     console.dir(evt);
@@ -304,6 +307,22 @@ class ShareButton extends HTMLElement {
   closeTootDialog(evt) {
     let dialog = this.shadowRoot.getElementById("toot-prompt");
     dialog.close();
+  }
+
+  // LI sharing
+  promote(evt) {
+    // https://www.linkedin.com/sharing/share-offsite/?url={url}
+    let url = new URL("/sharing/share-offsite", "https://www.linkedin.com");
+    url.searchParams.set("url", this._url);
+    url.searchParams.set("text", this._fullText);
+    window.open(url.toString(), "liShare", "popup,noopener");
+    this.#success(evt);
+  }
+
+  // Bsky
+  skeet(evt) {
+
+    // https://bsky.app/intent/compose ? text=...
   }
 
   connectedCallback() {
