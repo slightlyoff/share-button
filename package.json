@@ -7,17 +7,22 @@
     "url": "git@github.com:slightlyoff/share-button.git"
   },
   "scripts": {
+    "build": "npm run subset-node",
+    "subset-node": "node subset.mjs",
     "subset": "./subset.sh"
   },
   "files": [
     "share-button.js"
   ],
   "license": "MIT",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "main": "share-button.js",
   "module": "share-button.js",
   "keywords": [
     "web components",
     "web share"
-  ]
+  ],
+  "dependencies": {
+    "subset-font": "^2.4.0"
+  }
 }

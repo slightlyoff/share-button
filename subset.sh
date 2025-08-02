@@ -12,8 +12,8 @@ COMBINED="./combined.woff2"
 # Merge every time to avoid stale update bugs
 fonttools merge --output-file=$MERGED ./fontawesome/*.ttf
 
-# Share, Tweet, Link, Toot, LI Promote, Skeet, RSS
-pyftsubset $MERGED --unicodes="U+F14D,U+F099,U+F0C1,U+F4F6,U+F08C,U+E671,U+F09E" \
+# Share, Tweet, Link, Toot, LI Promote, Skeet, RSS, GH
+pyftsubset $MERGED --unicodes="U+F14D,U+F099,U+F0C1,U+F4F6,U+F08C,U+E671,U+F09E,U+F09B" \
   --flavor=woff2 --output-file=$COMBINED
 
 base64 $COMBINED \
