@@ -9,20 +9,23 @@
   "scripts": {
     "build": "npm run subset-node",
     "subset-node": "node subset.mjs",
-    "subset": "./subset.sh"
+    "subset": "./subset.sh",
+    "prepare": "npx esbuild --bundle share-button.js --outfile=share-button.min.js --minify --format=esm"
   },
   "files": [
-    "share-button.js"
+    "share-button.js",
+    "share-button.min.js"
   ],
   "license": "MIT",
-  "version": "0.4.2",
+  "version": "0.4.3",
   "main": "share-button.js",
   "module": "share-button.js",
   "keywords": [
     "web components",
     "web share"
   ],
-  "dependencies": {
+  "devDependencies": {
+    "esbuild": "^0.25.8",
     "subset-font": "^2.4.0"
   }
 }
