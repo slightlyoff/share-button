@@ -17,7 +17,7 @@
     "share-button.min.js"
   ],
   "license": "MIT",
-  "version": "0.4.3",
+  "version": "0.4.4",
   "main": "share-button.js",
   "module": "share-button.js",
   "keywords": [
