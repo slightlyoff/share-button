@@ -1,33 +1,4 @@
-// One-time global addition of fonts to the parent document. This prevents
-// repeated definitions as well as the node bloat of SVG.
-let srcUrl = `url(data:font/woff2;base64,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)`;
-
 let familyName = "share-button-combined";
-let addFont = true;
-try {
-  for(let font of document.fonts.keys()) {
-    if(font.family === familyName) {
-      addFont = false;
-      break;
-    }
-  }
-} catch(e) { /* squelch for FF */ }
-
-// Try to avoid extra layouts
-if(addFont) {
-  try {
-    var font = new FontFace(
-      familyName,
-      srcUrl,
-      { style: "normal", weight: "400" }
-    );
-    await font.load();
-    document.fonts.add(font);
-  } catch(e) {
-    console.error(e);
-  }
-}
-
 let _styleMap = new Map();
 let addStyles = (doc, styles) => {
   let s = _styleMap.get(styles);
@@ -58,10 +29,41 @@ let addStyles = (doc, styles) => {
   };
 }
 
+FONTS: {
+// One-time global addition of fonts to the parent document. This prevents
+// repeated definitions as well as the node bloat of SVG.
+let srcUrl = `url(data:font/woff2;base64,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)`;
+
+let addFont = true;
+try {
+  for(let font of document.fonts.keys()) {
+    if(font.family === familyName) {
+      addFont = false;
+      break;
+    }
+  }
+} catch(e) { /* squelch for FF */ }
+
+// Try to avoid extra layouts
+if(addFont) {
+  try {
+    var font = new FontFace(
+      familyName,
+      srcUrl,
+      { style: "normal", weight: "400" }
+    );
+    await font.load();
+    document.fonts.add(font);
+  } catch(e) {
+    console.error(e);
+  }
+}
+
+} // End FONTS
 
 class ShareButton extends HTMLElement {
 
-  static fontUrl = srcUrl;
+  // static fontUrl = srcUrl;
 
   static styles = `
     :host {
@@ -74,7 +76,7 @@ class ShareButton extends HTMLElement {
     :host > button {
       all: unset;
 
-      font-family: ${familyName};
+      font-family: "${familyName}";
       color: var(--color);
 
       display: inline-block;

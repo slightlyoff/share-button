@@ -10,14 +10,15 @@
     "build": "npm run subset-node",
     "subset-node": "node subset.mjs",
     "subset": "./subset.sh",
-    "prepare": "npx esbuild --bundle share-button.js --outfile=share-button.min.js --minify --format=esm"
+    "prepare": "npx esbuild --bundle share-button.js --outfile=share-button.min.js --minify --format=esm --target=esnext && npx esbuild --bundle share-button.js --outfile=share-button.min.no-fonts.js --minify --format=esm --target=esnext --drop-labels=FONTS"
   },
   "files": [
     "share-button.js",
-    "share-button.min.js"
+    "share-button.min.js",
+    "share-button.min-no-fonts.js"
   ],
   "license": "MIT",
-  "version": "0.4.4",
+  "version": "0.5.0",
   "main": "share-button.js",
   "module": "share-button.js",
   "keywords": [
