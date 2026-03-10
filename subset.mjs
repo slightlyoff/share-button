@@ -4,8 +4,8 @@ import * as fs from "fs/promises";
 let merged = await fs.readFile("./fontawesome/merged.ttf");
 
 const subset = await subsetFont(merged, 
-  // Share, Tweet, Link, Toot, LI Promote, Skeet, RSS, GH, IG, Tumblr
-  `\uF14D\uF099\uF0C1\uF4F6\uF08C\uE671\uF09E\uF09B\uF16D\uF173`,
+  // Share, Tweet, Link, Toot, LI Promote, Skeet, RSS, GH, IG, Tumblr, Email
+  `\uF14D\uF099\uF0C1\uF4F6\uF08C\uE671\uF09E\uF09B\uF16D\uF173\u0040`,
   { targetFormat: "woff2" }
 );
 
