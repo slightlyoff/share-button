@@ -7,10 +7,10 @@
     "url": "git@github.com:slightlyoff/share-button.git"
   },
   "scripts": {
-    "build": "npm run subset-node",
+    "build": "pnpm run subset-node",
     "subset-node": "node subset.mjs",
     "subset": "./subset.sh",
-    "prepare": "npx esbuild --bundle share-button.js --outfile=share-button.min.js --minify --format=esm --target=esnext && npx esbuild --bundle share-button.js --outfile=share-button.min.no-fonts.js --minify --format=esm --target=esnext --drop-labels=FONTS"
+    "prepare": "pnpx esbuild --bundle share-button.js --outfile=share-button.min.js --minify --format=esm --target=esnext && npx esbuild --bundle share-button.js --outfile=share-button.min.no-fonts.js --minify --format=esm --target=esnext --drop-labels=FONTS"
   },
   "files": [
     "share-button.js",
@@ -18,7 +18,7 @@
     "share-button.min.no-fonts.js"
   ],
   "license": "MIT",
-  "version": "0.5.1",
+  "version": "0.6.0",
   "main": "share-button.js",
   "module": "share-button.js",
   "keywords": [

@@ -147,6 +147,7 @@ class ShareButton extends HTMLElement {
         id="promote">
         &#xF08C;
       </button>
+      <!--
       <button
         part="ig-button"
         class="gram"
@@ -155,6 +156,7 @@ class ShareButton extends HTMLElement {
         id="gram">
         &#xF16D;
       </button>
+      -->
       <button
         part="tumblr-button"
         class="tumbl"
@@ -291,6 +293,10 @@ class ShareButton extends HTMLElement {
     }"\n\n`;
   }
 
+  #open(url, name) {
+    window.open(url.toString(), name, "popup,noopener");
+  }  
+
   // Web Share
   async share(evt) {
     let shareData = {
@@ -322,7 +328,7 @@ class ShareButton extends HTMLElement {
     let url = new URL("/intent/tweet", "https://twitter.com");
     url.searchParams.set("url", this._url);
     url.searchParams.set("text", this._fullText);
-    window.open(url.toString(), "twitterShare", "popup,noopener");
+    this.#open(url, "twitterShare");
     this.#success(evt);
   }
 
@@ -341,7 +347,7 @@ class ShareButton extends HTMLElement {
     let url = new URL("/share", instance);
     url.searchParams.set("url", this._url);
     url.searchParams.set("text", this._fullText);
-    window.open(url.toString(), "tootShare", "popup,noopener");
+    this.#open(url, "tootShare");
     this.#success(evt);
   }
 
@@ -365,14 +371,14 @@ class ShareButton extends HTMLElement {
     // https://bsky.app/intent/compose?text=...
     let url = new URL("/intent/compose", "https://bsky.app");
     url.searchParams.set("text", `${this._fullText} ${this._url}`);
-    window.open(url.toString(), "skeetShare", "popup,noopener");
+    this.#open(url, "skeetShare");
     this.#success(evt);
   }
 
   // IG
-  async gram(evt) {
-    // TODO
-  }
+  // async gram(evt) {
+  //   // TODO
+  // }
   
   // Tumblr
   async tumbl(evt) {
@@ -380,7 +386,7 @@ class ShareButton extends HTMLElement {
     let url = new URL("/share/link", "https://www.tumblr.com");
     url.searchParams.set("url", `${this._url}`);
     url.searchParams.set("posttype", "link");
-    window.open(url.toString(), "skeetShare", "popup,noopener");
+    this.#open(url, "tumblrShare");
     this.#success(evt);
   }
 
@@ -427,7 +433,7 @@ class ShareButton extends HTMLElement {
     listen("copy", "click", "copyLink");
     listen("toot-form", "submit", "toot");
     listen("cancel", "click", "closeTootDialog");
-    ["tweet", "promote", "skeet", "gram", "tumbl"].forEach((n) => {
+    ["tweet", "promote", "skeet", /*"gram",*/ "tumbl"].forEach((n) => {
       listen(n, "click", n);
     });
   }
