@@ -6,6 +6,7 @@ share-button.min.no-fonts.js
 npm-debug.log
 .env
 package-lock.json
+pnpm-lock.json
 test/*.log
 node_modules/*
 web_modules/*

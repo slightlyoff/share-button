@@ -28,6 +28,17 @@ let addStyles = (doc, styles) => {
       break;
   };
 }
+// For inline Lit syntax highlighting
+let css = function(strs, subs) {
+ if (strs?.length > 1 || subs?.length > 1) {
+  console.dir(strs);
+  console.dir(subs);
+  throw "tag called with values"; 
+ }
+ return strs[0];
+}; 
+let html = css;
+
 
 FONTS: {
 // One-time global addition of fonts to the parent document. This prevents
@@ -65,153 +76,146 @@ class ShareButton extends HTMLElement {
 
   // static fontUrl = srcUrl;
 
-  static styles = `
-    :host {
-      --transition-duration: 0.3s;
-      --hover-scale: 1.2;
-      --color: currentColor;
-      --hover-bg-color: rgba(0, 0, 0, 18%);
-    }
+  static styles = css`
+:host {
+  --transition-duration: 0.3s;
+  --hover-scale: 1.2;
+  --color: currentColor;
+  --hover-bg-color: rgba(0, 0, 0, 18%);
+}
 
-    button, a {
+button, a {
+  :host > & {
+    all: unset;
 
-      :host > & {
-        all: unset;
+    font-family: "share-button-combined";
+    color: var(--color);
 
-        font-family: "${familyName}";
-        color: var(--color);
+    display: inline-block;
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.2rem;
+    cursor: pointer;
+    will-change: transform;
+    transition: all var(--transition-duration, 0.3s);
+  }
+}
 
-        display: inline-block;
-        padding: 0.5rem 0.75rem;
-        border-radius: 0.2rem;
-        cursor: pointer;
-        will-change: transform;
-        transition: all var(--transition-duration, 0.3s);
-      }
-    }
+:host > button:focus, 
+:host > a:focus {
+  outline: 2px solid currentColor;
+  outline-style: auto;
+}
 
-    :host > button:focus, 
-    :host > a:focus {
-      outline: 2px solid currentColor;
-      outline-style: auto;
-    }
-
-    :host > button:hover, 
-    :host > a:hover {
-      background: var(--hover-bg-color);
-      transform: scale(var(--hover-scale));
-    }
+:host > button:hover, 
+:host > a:hover {
+  background: var(--hover-bg-color);
+  transform: scale(var(--hover-scale));
+}
   `;
 
   static template = (() => {
     // TODO: add an RSS button (icon &#xF09E;)
-    document.body.insertAdjacentHTML("beforeend", `
-    <template>
-      <button
-        part="share-button"
-        class="share"
-        aria-label="Share"
-        title="Share"
-        id="share">
-        &#xF14D
-      </button>
-      <button
-        part="tweet-button"
-        class="tweet"
-        aria-label="Share on Twitter"
-        title="Share on Twitter"
-        id="tweet">
-        &#xF099;
-      </button>
-      <button
-        part="toot-button"
-        class="toot"
-        aria-label="Share on Mastodon"
-        title="Share on Mastodon"
-        id="toot">
-        &#xF4F6;
-      </button>
-      <button
-        part="bsky-button"
-        class="skeet"
-        aria-label="Share on Bluesky"
-        title="Share on Bluesky"
-        id="skeet">
-        &#xE671;
-      </button>
-      <button
-        part="li-button"
-        class="promote"
-        aria-label="Share on LinkedIn"
-        title="Share on LinkedIn"
-        id="promote">
-        &#xF08C;
-      </button>
-      <!--
-      <button
-        part="ig-button"
-        class="gram"
-        aria-label="Share on Instagram"
-        title="Share on Instagram"
-        id="gram">
-        &#xF16D;
-      </button>
-      -->
-      <button
-        part="tumblr-button"
-        class="tumbl"
-        aria-label="Share on Tumblr"
-        title="Share on Tumblr"
-        id="tumbl">
-        &#xF173;
-      </button>
-      <a
-        part="email-button"
-        class="email"
-        aria-label="Share in email"
-        title="Share in email"
-        id="email"
-        target="_blank"
-        rel="noopener">
-        &#x40;
-      </a>
-      <button
-        part="copy-link-button"
-        class="copy-link"
-        aria-label="Copy link to this article"
-        title="Copy link to this article"
-        id="copy">
-        &#xF0C1;
-      </button>
-      <dialog id="toot-prompt" 
-        part="toot-prompt-dialog">
-        <form method="dialog" id="toot-form">
-          <label for="instance">Instance</label>
-          <input
-            type="url"
-            id="instance"
-            placeholder="https://mastodon.social/"
-            pattern="https://.*"
-            list="defaultURLs"
-            required>
-            <datalist id="defaultURLs">
-              <option value="https://mastodon.social/"></option>
-              <option value="https://toot.cafe/"></option>
-              <option value="https://hachyderm.io/"></option>
-              <option value="https://infosec.exchange/"></option>
-              <option value="https://mastodon.art/"></option>
-              <option value="https://jouna.host/"></option>
-              <option value="https://indieweb.social/"></option>
-            </datalist>
-          <menu>
-            <button id="cancel" type="button">Cancel</button>
-            <button type="submit">Toot</button>
-          </menu>
-        </form>
-      </dialog>
-    </template>`);
+    document.body.insertAdjacentHTML("beforeend", html`
+<template>
+  <button part="share-button"
+    class="share"
+    aria-label="Share"
+    title="Share"
+    id="share">
+    &#xF14D
+  </button>
+  <button part="tweet-button"
+    class="tweet"
+    aria-label="Share on Twitter"
+    title="Share on Twitter"
+    id="tweet">
+    &#xF099;
+  </button>
+  <button part="toot-button"
+    class="toot"
+    aria-label="Share on Mastodon"
+    title="Share on Mastodon"
+    id="toot">
+    &#xF4F6;
+  </button>
+  <button part="bsky-button"
+    class="skeet"
+    aria-label="Share on Bluesky"
+    title="Share on Bluesky"
+    id="skeet">
+    &#xE671;
+  </button>
+  <button part="li-button"
+    class="promote"
+    aria-label="Share on LinkedIn"
+    title="Share on LinkedIn"
+    id="promote">
+    &#xF08C;
+  </button>
+  <button part="tumblr-button"
+    class="tumbl"
+    aria-label="Share on Tumblr"
+    title="Share on Tumblr"
+    id="tumbl">
+    &#xF173;
+  </button>
+  <a part="email-button"
+    class="email"
+    aria-label="Share in email"
+    title="Share in email"
+    id="email"
+    target="_blank"
+    rel="noopener">
+    &#x40;
+  </a>
+  <button part="copy-link-button"
+    class="copy-link"
+    aria-label="Copy link to this article"
+    title="Copy link to this article"
+    id="copy">
+    &#xF0C1;
+  </button>
+  <dialog id="toot-prompt" 
+    part="toot-prompt-dialog">
+    <form method="dialog" id="toot-form">
+      <label for="instance">Instance</label>
+      <input
+        type="url"
+        id="instance"
+        placeholder="https://mastodon.social/"
+        pattern="https://.*"
+        list="defaultURLs"
+        required>
+        <datalist id="defaultURLs">
+          <option value="https://mastodon.social/"></option>
+          <option value="https://toot.cafe/"></option>
+          <option value="https://hachyderm.io/"></option>
+          <option value="https://infosec.exchange/"></option>
+          <option value="https://mastodon.art/"></option>
+          <option value="https://jouna.host/"></option>
+          <option value="https://indieweb.social/"></option>
+        </datalist>
+      <menu>
+        <button id="cancel" type="button">Cancel</button>
+        <button type="submit">Toot</button>
+      </menu>
+    </form>
+  </dialog>
+</template>
+`);
     return document.body.lastElementChild;
   })();
+
+/*
+  // TODO:
+  <button part="ig-button"
+    class="gram"
+    aria-label="Share on Instagram"
+    title="Share on Instagram"
+    id="gram">
+    &#xF16D;
+  </button>
+*/
 
   static get observedAttributes() {
     return [
@@ -219,6 +223,7 @@ class ShareButton extends HTMLElement {
       "title",
       "text",
       "image",
+      "order",
     ];
   }
 
@@ -235,7 +240,7 @@ class ShareButton extends HTMLElement {
     if(ShareButton.observedAttributes.includes(name) &&
        oldValue !== newValue) {
       this[name] = newValue;
-      this.updateEmail();
+      this.#updateEmail();
     }
   }
 
@@ -391,12 +396,12 @@ class ShareButton extends HTMLElement {
   }
 
   // Email
-  updateEmail(evt) {
+  #updateEmail() {
     let url = new URL("mailto:");
     url.searchParams.set("subject", `${this.title}`);
     // TODO: make more configurable
     url.searchParams.set("body", `${this._fullText} ${this._url}`);
-    this.#$$("email").setAttribute("href", url+"");
+    this.#$$("email")?.setAttribute("href", url+"");
   }
 
   connectedCallback() {
@@ -436,6 +441,26 @@ class ShareButton extends HTMLElement {
     ["tweet", "promote", "skeet", /*"gram",*/ "tumbl"].forEach((n) => {
       listen(n, "click", n);
     });
+    this.#updateOrder();
+  }
+
+  // We count on these all being called infrequently
+  #order = [];
+  set order(value) { 
+    this.#order = value.split(/\s+/).filter(i => !!i);
+    this.#updateOrder();
+  }
+  get order() { return this.#order.join(" "); }
+
+  #updateOrder() {
+    if(!this.#wired) { return; }
+    let b = this.#$(":host > button, :host > a");
+    // Hide/unhide items
+    b.forEach((i) => { 
+      i.style.display = 
+          (!this.#order.length || this.#order.includes(i.id)) ? "" : "none";
+    });
+    this.shadowRoot.prepend(...(this.#order.map(this.#$$.bind(this))));
   }
 }
 customElements.define("share-button", ShareButton);
