@@ -1,10 +1,14 @@
 {
   "name": "@slightlyoff/share-button",
   "description": "A web component for sharing.",
-  "author": "Alex Russell <slightlyoff@gmail.com>",
+  "author": {
+    "name": "Alex Russell",
+    "email": "slightlyoff@gmail.com",
+    "url": "https://infrequently.org"
+  },
   "repository": {
     "type": "git",
-    "url": "git@github.com:slightlyoff/share-button.git"
+    "url": "git+https://github.com/share-button.git"
   },
   "scripts": {
     "build": "pnpm run subset-node",
